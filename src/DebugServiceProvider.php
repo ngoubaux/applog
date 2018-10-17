@@ -85,11 +85,12 @@ class DebugServiceProvider extends ServiceProvider
         ], 'config');
 
         // Log needs a closure as a listener
-        Log::listen(function ($level, $message, $context) {
+        Log::listen(function ($msg) {
             // Throw out debug messages if we are not in debug mode
-            if (($level == 'debug') && (\Config::get('app.debug') != true)) {
+            if (($msg->level == 'debug') && (\Config::get('app.debug') != true)) {
                 return;
             }
+            $message = $msg->message;
 
             // Fetch the currently logged in user
             $username = ApplogHelper::currentUserName();
